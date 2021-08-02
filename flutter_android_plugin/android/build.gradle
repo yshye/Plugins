@@ -1,0 +1,51 @@
+group 'cn.yshye.android.plugin.flutter_android_plugin'
+version '1.0'
+
+buildscript {
+    repositories {
+        // 添加阿里云 maven 地址
+        maven {
+            url 'https://maven.aliyun.com/repository/public/'
+        }
+        google()
+        jcenter()
+        maven { url 'https://jitpack.io' }
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.1.0'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.2'
+    }
+}
+
+rootProject.allprojects {
+    repositories {
+        // 添加阿里云 maven 地址
+        maven {
+            url 'https://maven.aliyun.com/repository/public/'
+        }
+        google()
+        jcenter()
+        maven { url 'https://jitpack.io' }
+    }
+}
+
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 30
+
+    defaultConfig {
+        minSdkVersion 16
+    }
+}
+
+
+dependencies {
+
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'com.github.SpeedataG:Device:1.6.8'
+    implementation 'com.alibaba:fastjson:1.2.54'
+
+}
