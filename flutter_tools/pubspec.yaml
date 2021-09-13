@@ -37,7 +37,7 @@ dependencies:
   # 处理键盘事件 https://github.com/diegoveloper/flutter_keyboard_actions
   keyboard_actions: ^3.4.4
   # 图标 https://github.com/google/charts
-  charts_flutter: ^0.11.0
+  charts_flutter: ^0.10.0
   # 状态管理 https://github.com/rrousselGit/provider
   provider: ^6.0.0
   rxdart: ^0.27.2
