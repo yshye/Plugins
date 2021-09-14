@@ -38,9 +38,9 @@ public class LocationFlutterPlugin implements FlutterPlugin, MethodChannel.Metho
     private boolean isInChina = false;
     private boolean isNotify = false;
 
-    LocationFlutterPlugin(Context context) {
-        mContext = context;
-    }
+    // LocationFlutterPlugin(Context context) {
+    //     mContext = context;
+    // }
 
 //  注册组件
 //    public static void registerWith(PluginRegistry.Registrar registrar) {
@@ -294,7 +294,9 @@ public class LocationFlutterPlugin implements FlutterPlugin, MethodChannel.Metho
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding binding) {
-        LocationFlutterPlugin plugin = new LocationFlutterPlugin(binding.getApplicationContext());
+        mContext = binding.getApplicationContext();
+        LocationFlutterPlugin plugin = new LocationFlutterPlugin();
+        plugin.mContext = mContext;
         /**
          * 开始、停止定位
          */

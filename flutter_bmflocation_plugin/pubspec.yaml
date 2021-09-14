@@ -32,7 +32,7 @@ flutter:
     platforms:
       android:
         package: com.baidu.bdmap_location_flutter_plugin
-        pluginClass: FlutterBmflocationPlugin
+        pluginClass: LocationFlutterPlugin
       ios:
         pluginClass: LocationFlutterPlugin
 
