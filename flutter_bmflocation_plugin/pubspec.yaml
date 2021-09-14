@@ -34,7 +34,7 @@ flutter:
         package: com.baidu.bdmap_location_flutter_plugin
         pluginClass: FlutterBmflocationPlugin
       ios:
-        pluginClass: FlutterBmflocationPlugin
+        pluginClass: LocationFlutterPlugin
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:

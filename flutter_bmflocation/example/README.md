@@ -1,6 +1,6 @@
-# bdmap_location_flutter_plugin_example
+# example
 
-Demonstrates how to use the bdmap_location_flutter_plugin plugin.
+A new Flutter project.
 
 ## Getting Started
 

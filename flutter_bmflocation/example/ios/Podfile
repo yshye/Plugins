@@ -1,5 +1,5 @@
 # Uncomment this line to define a global platform for your project
-platform :ios, '8.0'
+# platform :ios, '9.0'
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
@@ -27,11 +27,6 @@ require File.expand_path(File.join('packages', 'flutter_tools', 'bin', 'podhelpe
 
 flutter_ios_podfile_setup
 
-pre_install do |installer|
-  # workaround for https://github.com/CocoaPods/CocoaPods/issues/3289
-  Pod::Installer::Xcode::TargetValidator.send(:define_method, :verify_no_static_framework_transitive_dependencies) {}
-end
-
 target 'Runner' do
   use_frameworks!
   use_modular_headers!
@@ -44,4 +39,3 @@ post_install do |installer|
     flutter_additional_ios_build_settings(target)
   end
 end
-
