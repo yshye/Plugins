@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mini_calendar/mini_calendar.dart';
@@ -56,6 +58,17 @@ class _MonthPageViewDemoState extends State<MonthPageViewDemo> {
               },
               onMonthChange: (month) {
                 _month = month;
+                _controller.option.setMarks({
+                  DateDay(_month.year, _month.month, Random().nextInt(10)):
+                      '111',
+                  DateDay(_month.year, _month.month, 10 + Random().nextInt(5)):
+                      '222',
+                  DateDay(_month.year, _month.month, 15 + Random().nextInt(10)):
+                      '333',
+                  DateDay(_month.year, _month.month, 25 + Random().nextInt(5)):
+                      '444',
+                });
+                _controller.reLoad();
                 setState(() {});
               },
               onDaySelected: (day, data, enable) {
