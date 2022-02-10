@@ -65,15 +65,15 @@ Widget defaultBuildMonthHead(BuildContext context, DateMonth month,
           onLast == null
               ? Container()
               : IconButton(
-                  icon: Icon(Icons.chevron_left, color: Color(0x73000000)),
-                  onPressed: onLast),
+              icon: Icon(Icons.chevron_left, color: Color(0x73000000)),
+              onPressed: onLast),
           Text(month.toString(yearSuffix: '年', monthSuffix: '月'),
               style: TextStyle(fontSize: 20, color: Color(0xd9000000))),
           onNext == null
               ? Container()
               : IconButton(
-                  icon: Icon(Icons.chevron_right, color: Color(0x73000000)),
-                  onPressed: onNext),
+              icon: Icon(Icons.chevron_right, color: Color(0x73000000)),
+              onPressed: onNext),
         ],
       ),
     ),
@@ -83,9 +83,9 @@ Widget defaultBuildMonthHead(BuildContext context, DateMonth month,
         child: onClear == null
             ? Container()
             : IconButton(
-                icon: Icon(Icons.delete_forever),
-                onPressed: onClear,
-                color: Colors.red))
+            icon: Icon(Icons.delete_forever),
+            onPressed: onClear,
+            color: Colors.red))
   ]);
 }
 
@@ -127,21 +127,22 @@ Widget defaultBuildYearHead(BuildContext context, int year,
 /// [onDaySelected] - 选择事件 <br/>
 Widget defaultBuildDayItem<T>(BuildContext context,
     {DateDay dayTime,
-    bool enableSelect,
-    bool hasMark,
-    double height,
-    double width,
-    T markData,
-    Color weekColor = const Color(0xa6000000),
-    Color weekendColor = const Color(0xffFF4081),
-    bool isSelected = false,
-    bool isContinuous = false,
-    bool isMultiple = false,
-    bool first = true,
-    bool end = true,
-    BuildMark<T> buildMark,
-    OnDaySelected<T> onDaySelected,
-    CalendarLocaleType localeType = CalendarLocaleType.zh}) {
+      bool enableSelect,
+      bool hasMark,
+      double height,
+      double width,
+      T markData,
+      Color weekColor = const Color(0xa6000000),
+      Color weekendColor = const Color(0xffFF4081),
+      Color dayCheckedColor = const Color(0xff487cff),
+      bool isSelected = false,
+      bool isContinuous = false,
+      bool isMultiple = false,
+      bool first = true,
+      bool end = true,
+      BuildMark<T> buildMark,
+      OnDaySelected<T> onDaySelected,
+      CalendarLocaleType localeType = CalendarLocaleType.zh}) {
   Color _sideColor = Colors.transparent;
   BorderRadiusGeometry borderRadius = BorderRadius.zero;
   Color _dayColor = Colors.transparent;
@@ -157,7 +158,7 @@ Widget defaultBuildDayItem<T>(BuildContext context,
         fontSize: 18, color: dayTime.weekday > 5 ? weekendColor : weekColor);
   }
   if (isSelected) {
-    _dayColor = Color(0xff487cff);
+    _dayColor = dayCheckedColor;
     borderRadius = BorderRadius.circular(5);
     _style = _style.copyWith(color: Colors.white);
   }
@@ -207,7 +208,10 @@ Widget defaultBuildDayItem<T>(BuildContext context,
 
   return Padding(
     padding: EdgeInsets.only(
-        top: 9, bottom: 9, left: isMultiple ? 3 : 0, right: isMultiple ? 3 : 0),
+        top: isMultiple ? 6 : 3,
+        bottom: isMultiple ? 6 : 3,
+        left: isMultiple ? 3 : 0,
+        right: isMultiple ? 3 : 0),
     child: Material(
       color: _dayColor,
       shape: RoundedRectangleBorder(
@@ -225,7 +229,7 @@ Widget defaultBuildDayItem<T>(BuildContext context,
             }
           },
           child: Container(
-            height: height - 18,
+            height: height - (isMultiple ? 12 : 6),
             width: width - (isMultiple ? 6 : 0),
             child: Stack(children: items),
           ),
@@ -280,6 +284,7 @@ typedef BuildWithDay<T> = Widget Function(BuildContext context,
     bool isContinuous,
     bool isMultiple,
     BuildMark<T> buildMark,
+
     OnDaySelected<T> onDaySelected});
 
 /// 构建Mark  <br/>

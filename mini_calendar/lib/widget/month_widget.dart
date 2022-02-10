@@ -61,6 +61,9 @@ class MonthWidget<T> extends StatelessWidget {
   /// 周末字体颜色
   final Color weekendColor;
 
+  /// 选中日期的背景色
+  final Color dayCheckedColor;
+
   /// 构建月视图头部
   final BuildWithMonth buildMonthHead;
 
@@ -113,6 +116,7 @@ class MonthWidget<T> extends StatelessWidget {
     this.weekColor = const Color(0xa6000000),
     this.weekendColor = const Color(0xffFF4081),
     this.localeType = CalendarLocaleType.zh,
+    this.dayCheckedColor = const Color(0xff487cff),
   }) : super(key: key);
 
   @override
@@ -132,30 +136,33 @@ class MonthWidget<T> extends StatelessWidget {
           int _endSize = 7 - (_headSize + _currentMonth.maxDays) % 7;
           _endSize = _endSize == 7 ? 0 : _endSize;
           int _hSize =
-              ((_headSize + _currentMonth.maxDays + _endSize) / 7.0).floor();
+          ((_headSize + _currentMonth.maxDays + _endSize) / 7.0).floor();
 
-          double _width = width ?? MediaQuery.of(context).size.width;
+          double _width = width ?? MediaQuery
+              .of(context)
+              .size
+              .width;
           double _height = height ?? _width * 5.5 / 7.0;
           double _dayWidth =
-              ((_width - padding.left - padding.right - 1.0) / 7.0);
+          ((_width - padding.left - padding.right - 1.0) / 7.0);
           double _dayHeight =
-              ((_height - padding.top - padding.bottom - 1.0) / _hSize);
+          ((_height - padding.top - padding.bottom - 1.0) / _hSize);
 
           List<DateDay> _days = [];
 
           List.generate(_headSize, (index) {
             _days.add(DateDay(_currentMonth.monthFirstDay.year,
-                    _currentMonth.monthFirstDay.month, 1)
+                _currentMonth.monthFirstDay.month, 1)
                 .subtract(Duration(days: _headSize - index)));
           });
           List.generate(_currentMonth.maxDays, (index) {
             _days.add(DateDay(_currentMonth.monthFirstDay.year,
-                    _currentMonth.monthFirstDay.month, 1)
+                _currentMonth.monthFirstDay.month, 1)
                 .add(Duration(days: index)));
           });
           List.generate(_endSize, (index) {
             _days.add(DateDay(_currentMonth.monthEndDay.year,
-                    _currentMonth.monthEndDay.month, _currentMonth.maxDays)
+                _currentMonth.monthEndDay.month, _currentMonth.maxDays)
                 .add(Duration(days: index + 1)));
           });
 
@@ -168,7 +175,7 @@ class MonthWidget<T> extends StatelessWidget {
                   left: padding.left, right: padding.right, top: 5, bottom: 5),
               child: buildMonthHead != null
                   ? buildMonthHead(
-                      context, _width, double.infinity, _currentMonth)
+                  context, _width, double.infinity, _currentMonth)
                   : defaultBuildMonthHead(context, _currentMonth),
             ));
           }
@@ -188,7 +195,7 @@ class MonthWidget<T> extends StatelessWidget {
                     child: buildWeekHead != null
                         ? buildWeekHead(context, week)
                         : defaultBuildWeekHead(context, week,
-                            localeType: localeType),
+                        localeType: localeType),
                   );
                 }),
               ),
@@ -208,10 +215,10 @@ class MonthWidget<T> extends StatelessWidget {
                       height: _height,
                       child: showBackground
                           ? (buildMonthBackground != null
-                              ? buildMonthBackground(
-                                  context, _width, _height, _currentMonth)
-                              : defaultBuildMonthBackground(
-                                  context, _currentMonth))
+                          ? buildMonthBackground(
+                          context, _width, _height, _currentMonth)
+                          : defaultBuildMonthBackground(
+                          context, _currentMonth))
                           : Container(),
                     ),
                     Container(
@@ -222,51 +229,53 @@ class MonthWidget<T> extends StatelessWidget {
                           runSpacing: 0,
                           children: _days.map((_time) {
                             bool enableSelect =
-                                _option.enableDay(_time, _currentMonth);
+                            _option.enableDay(_time, _currentMonth);
                             bool isContinuous = _option.inContinuousDay(_time);
                             bool isMultiple = _option.inMultipleDay(_time);
                             return buildDayItem == null
                                 ? defaultBuildDayItem<T>(
-                                    context,
-                                    dayTime: _time,
-                                    weekColor: weekColor,
-                                    weekendColor: weekendColor,
-                                    enableSelect: enableSelect,
-                                    height: _dayHeight,
-                                    width: _dayWidth,
-                                    first: isContinuous &&
-                                        _time == _option.firstSelectDay,
-                                    end: isContinuous &&
-                                        (_option.secondSelectDay == null ||
-                                            _time == _option.secondSelectDay),
-                                    hasMark: _option.marks.containsKey(_time),
-                                    markData: _option.marks[_time],
-                                    buildMark: buildMark,
-                                    onDaySelected: (day, data, enable) =>
-                                        _onDaySelected(day, data, _option,
-                                            _monthController, enable),
-                                    isSelected: _option.currentDay == _time,
-                                    isMultiple: isMultiple,
-                                    isContinuous: isContinuous,
-                                    localeType: localeType,
-                                  )
+                              context,
+                              dayTime: _time,
+                              weekColor: weekColor,
+                              weekendColor: weekendColor,
+                              enableSelect: enableSelect,
+                              height: _dayHeight,
+                              width: _dayWidth,
+                              first: isContinuous &&
+                                  _time == _option.firstSelectDay,
+                              end: isContinuous &&
+                                  (_option.secondSelectDay == null ||
+                                      _time == _option.secondSelectDay),
+                              hasMark: _option.marks.containsKey(_time),
+                              markData: _option.marks[_time],
+                              buildMark: buildMark,
+                              onDaySelected: (day, data, enable) =>
+                                  _onDaySelected(day, data, _option,
+                                      _monthController, enable),
+                              isSelected: _option.currentDay == _time,
+                              isMultiple: isMultiple,
+                              isContinuous: isContinuous,
+                              localeType: localeType,
+                              dayCheckedColor: dayCheckedColor,
+                            )
                                 : buildDayItem(
-                                    context,
-                                    dayTime: _time,
-                                    weekColor: weekColor,
-                                    weekendColor: weekendColor,
-                                    enableSelect: enableSelect,
-                                    height: _dayHeight,
-                                    width: _dayWidth,
-                                    hasMark: _option.marks.containsKey(_time),
-                                    markData: _option.marks[_time],
-                                    buildMark: buildMark,
-                                    onDaySelected: (day, data, enable) =>
-                                        _onDaySelected(day, data, _option,
-                                            _monthController, enable),
-                                    isSelected: _option.currentDay == _time,
-                                    isContinuous: isContinuous,
-                                  );
+                              context,
+                              dayTime: _time,
+                              weekColor: weekColor,
+                              weekendColor: weekendColor,
+                              enableSelect: enableSelect,
+                              height: _dayHeight,
+                              width: _dayWidth,
+                              hasMark: _option.marks.containsKey(_time),
+                              markData: _option.marks[_time],
+                              buildMark: buildMark,
+                              onDaySelected: (day, data, enable) =>
+                                  _onDaySelected(day, data, _option,
+                                      _monthController, enable),
+                              isSelected: _option.currentDay == _time,
+                              isContinuous: isContinuous,
+                              // dayCheckedColor:dayCheckedColor,
+                            );
                           }).toList()),
                     )
                   ],

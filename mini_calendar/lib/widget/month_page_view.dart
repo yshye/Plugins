@@ -77,6 +77,10 @@ class MonthPageView<T> extends StatefulWidget {
 
   final VoidCallback onClear;
 
+  /// 选中日期的背景色
+  final Color dayCheckedColor;
+
+
   const MonthPageView({
     Key key,
     this.onMonthChange,
@@ -100,6 +104,7 @@ class MonthPageView<T> extends StatefulWidget {
     this.localeType = CalendarLocaleType.zh,
     this.onMultipleSelectListen,
     this.onClear,
+    this.dayCheckedColor = const Color(0xff487cff),
   }) : super(key: key);
 
   @override
@@ -128,7 +133,10 @@ class _MonthPageViewState<T> extends State<MonthPageView<T>> {
 
   @override
   Widget build(BuildContext context) {
-    double _width = widget.width ?? MediaQuery.of(context).size.width;
+    double _width = widget.width ?? MediaQuery
+        .of(context)
+        .size
+        .width;
     double _height = widget.height ?? _width * 5.5 / 7.0;
     List<Widget> items = [
       Container(
@@ -153,6 +161,7 @@ class _MonthPageViewState<T> extends State<MonthPageView<T>> {
                       showWeekHead: false,
                       showMonthHead: false,
                       padding: widget.padding,
+                      dayCheckedColor: widget.dayCheckedColor,
                       onMultipleSelectListen: (days) {
                         _monthPageController
                           ..setMultipleDays(days)
@@ -172,10 +181,9 @@ class _MonthPageViewState<T> extends State<MonthPageView<T>> {
                           _monthPageController.next();
                         } else if (day < month.monthFirstDay) {
                           _monthPageController.last();
-                        } else {
-                          if (widget.onDaySelected != null)
-                            widget.onDaySelected(day, data, enable);
                         }
+                        if (widget.onDaySelected != null)
+                          widget.onDaySelected(day, data, enable);
                       },
                       onContinuousSelectListen: (firstDay, secondDay) {
                         _monthPageController
@@ -211,7 +219,7 @@ class _MonthPageViewState<T> extends State<MonthPageView<T>> {
                 child: widget.buildWeekHead != null
                     ? widget.buildWeekHead(context, week)
                     : defaultBuildWeekHead(context, week,
-                        localeType: widget.localeType),
+                    localeType: widget.localeType),
               );
             }),
           ),
@@ -235,14 +243,14 @@ class _MonthPageViewState<T> extends State<MonthPageView<T>> {
               builder: (ctx, data) {
                 return widget.buildMonthHead != null
                     ? widget.buildMonthHead(context, _width, double.infinity,
-                        _monthPageController.monthList[data.data])
+                    _monthPageController.monthList[data.data])
                     : defaultBuildMonthHead(
-                        context,
-                        _monthPageController.monthList[data.data],
-                        onLast: () => _monthPageController.last(),
-                        onNext: () => _monthPageController.next(),
-                        onClear: widget.onClear,
-                      );
+                  context,
+                  _monthPageController.monthList[data.data],
+                  onLast: () => _monthPageController.last(),
+                  onNext: () => _monthPageController.next(),
+                  onClear: widget.onClear,
+                );
               }),
         ),
       );
