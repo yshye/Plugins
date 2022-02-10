@@ -14,12 +14,16 @@ class GroupTagPanelWidget extends StatelessWidget {
   final Color tagColor;
   final Color valueColor;
   final Color panelColor;
+  final TextAlign textAlign;
+  final double fontSize;
+  final Color titlePrefixColor;
 
   const GroupTagPanelWidget({
     Key key,
     this.groupTitle,
     this.groupTitleStyle,
     this.groupTitleColor,
+
     this.items,
     this.groupTitlePadding,
     this.panelPadding,
@@ -27,6 +31,9 @@ class GroupTagPanelWidget extends StatelessWidget {
     this.tagColor = const Color(0xff939baf),
     this.valueColor = const Color(0xff5d6478),
     this.panelColor = Colors.white,
+    this.textAlign = TextAlign.left,
+    this.fontSize = 16,
+    this.titlePrefixColor,
   }) : super(key: key);
 
   @override
@@ -38,11 +45,21 @@ class GroupTagPanelWidget extends StatelessWidget {
               groupTitlePadding ?? EdgeInsets.only(bottom: 5, left: 10, top: 5),
           width: double.infinity,
           color: groupTitleColor,
-          child: Text(
-            groupTitle ?? '',
-            style: groupTitleStyle ??
-                TextStyle(fontSize: 18, color: Color(0xff9fa7b7)),
-          ),
+          child: Row(children: [
+            if(titlePrefixColor!=null)...{
+              Container(
+                width: 3,
+                height: 20,
+                color: titlePrefixColor,
+                margin: EdgeInsets.only(right: 5),
+              ),
+            },
+            Text(
+              groupTitle ?? '',
+              style: groupTitleStyle ??
+                  TextStyle(fontSize: 16, color: Color(0xff9fa7b7)),
+            ),
+          ],)
         ),
         TagPanelWidget(
           items,
@@ -50,7 +67,9 @@ class GroupTagPanelWidget extends StatelessWidget {
           tagColor: tagColor,
           valueColor: valueColor,
           panelColor: panelColor,
-          padding: panelPadding ?? EdgeInsets.only(bottom: 5, left: 10, top: 5),
+          padding: panelPadding ?? EdgeInsets.only(bottom: 5, left: 10, top: 5,right: 5),
+          fontSize: fontSize,
+          textAlign: textAlign,
         )
       ],
     );

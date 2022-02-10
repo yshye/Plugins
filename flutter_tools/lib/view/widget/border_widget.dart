@@ -13,20 +13,21 @@ class BorderWidget extends StatelessWidget {
   final double width;
   final double height;
   final double shapeWidth;
+  final int maxLines;
 
-  BorderWidget(
-      {this.backColor,
-      this.width,
-      this.height,
-      @required this.label,
-      this.fontSize = 10,
-      this.textColor = Colors.white,
-      this.borderRadius = const BorderRadius.all(Radius.circular(5.0)),
-      this.margin = const EdgeInsets.only(),
-      this.fontWeight = FontWeight.bold,
-      this.padding =
-          const EdgeInsets.only(top: 3, bottom: 2, left: 5, right: 5),
-      this.shapeWidth = 0.5});
+  BorderWidget({this.backColor,
+    this.width,
+    this.height,
+    @required this.label,
+    this.maxLines = 1,
+    this.fontSize = 10,
+    this.textColor = Colors.white,
+    this.borderRadius = const BorderRadius.all(Radius.circular(5.0)),
+    this.margin = const EdgeInsets.only(),
+    this.fontWeight = FontWeight.bold,
+    this.padding =
+    const EdgeInsets.only(top: 3, bottom: 2, left: 5, right: 5),
+    this.shapeWidth = 0.5});
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +54,7 @@ class BorderWidget extends StatelessWidget {
               shape: BoxShape.rectangle),
           child: Text(
             label ?? '',
-            maxLines: 1,
+            maxLines: maxLines,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
                 color: this.textColor,

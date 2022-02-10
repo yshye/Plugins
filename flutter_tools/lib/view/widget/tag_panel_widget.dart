@@ -14,9 +14,10 @@ class TagPanelWidget extends StatelessWidget {
   /// tag - value 显示形式，只针对单个有效
   final Axis axis;
   final List items;
+  final TextAlign textAlign;
+  final double fontSize;
 
-  const TagPanelWidget(
-    this.items, {
+  const TagPanelWidget(this.items, {
     Key key,
     this.tagWidth = 80,
     this.itemHeight = 15,
@@ -25,7 +26,10 @@ class TagPanelWidget extends StatelessWidget {
     this.axis = Axis.horizontal,
     this.tagColor = const Color(0xff939baf),
     this.valueColor = const Color(0xff5d6478),
-  })  : assert(items != null),
+    this.textAlign = TextAlign.left,
+    this.fontSize = 16,
+  })
+      : assert(items != null),
         super(key: key);
 
   @override
@@ -42,10 +46,13 @@ class TagPanelWidget extends StatelessWidget {
             e.tagColor2 ??= tagColor;
             e.valueColor2 ??= valueColor;
             return TagValueCell(
-                data: e,
-                tagWidth: tagWidth,
-                miniHeight: itemHeight,
-                padding: padding);
+              data: e,
+              tagWidth: tagWidth,
+              miniHeight: itemHeight,
+              padding: padding,
+              textAlign: textAlign,
+              fontSize: fontSize,
+            );
           }
           if (e is Widget) return Container(padding: padding, child: e);
           return Container();

@@ -14,6 +14,7 @@ class SearchListDialog<T> extends StatefulWidget {
   final ToString<T> toLabel;
   final ValueChanged<T> onTap;
   final EdgeInsetsGeometry padding;
+  final double height;
 
   const SearchListDialog({
     Key key,
@@ -24,6 +25,7 @@ class SearchListDialog<T> extends StatefulWidget {
     this.items,
     this.toLabel,
     this.padding = const EdgeInsets.only(left: 5, right: 5, bottom: 10),
+    this.height,
   }) : super(key: key);
 
   @override
@@ -48,11 +50,14 @@ class _SearchListDialogState<T> extends State<SearchListDialog<T>> {
     List<T> _list = widget.items;
     if (_searchKey.isNotEmpty) {
       _list = _list
-              .where((element) => widget.toLabel(element).contains(_searchKey))
-              ?.toList() ??
+          .where((element) => widget.toLabel(element).contains(_searchKey))
+          ?.toList() ??
           [];
     }
-    double _height = MediaQuery.of(context).size.height * 4 / 9.0;
+    double _height = widget.height ?? MediaQuery
+        .of(context)
+        .size
+        .height * 4 / 9.0;
     if (widget.items.length < 6) {
       _height = widget.titleHeight + widget.items.length * 60 + 10;
     }
@@ -79,14 +84,15 @@ class _SearchListDialogState<T> extends State<SearchListDialog<T>> {
         onPressed: () => NavigatorUtil.pop(context),
       ),
       children: _list
-          .map((e) => ListTile(
-                onTap: () {
-                  widget.onTap(e);
-                  NavigatorUtil.pop(context);
-                },
-                title: Text(widget.toLabel(e) ?? '',
-                    maxLines: 1, overflow: TextOverflow.ellipsis),
-              ))
+          .map((e) =>
+          ListTile(
+            onTap: () {
+              widget.onTap(e);
+              NavigatorUtil.pop(context);
+            },
+            title: Text(widget.toLabel(e) ?? '',
+                maxLines: 1, overflow: TextOverflow.ellipsis),
+          ))
           .toList(),
     );
   }

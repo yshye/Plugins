@@ -45,6 +45,7 @@ Widget buildTagSelectCell<T>(BuildContext context,
             : () {
           if (items == null || items.length < 1) {
             onItemSelected(-1);
+            return;
           }
           showBottomPopup(context, '请选择$tag', items,
             buildCheckChild: buildCheckChild, autoHeight: autoHeight)
@@ -93,6 +94,7 @@ Widget buildTagSelectCell<T>(BuildContext context,
                         textAlign: style == TagCellStyle.style1
                             ? TextAlign.start
                             : TextAlign.right,
+                        maxLines: valueMaxLines,
                         decoration: inputDecoration ??
                             InputDecoration(
                               hintText: hintText ?? '请选择$tag',
