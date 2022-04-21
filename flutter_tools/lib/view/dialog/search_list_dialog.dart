@@ -5,6 +5,7 @@ import 'package:flutter_tools/view/widget/mini_search_widget.dart';
 import '../../router/navigator_util.dart';
 import '../typedef.dart';
 import 'bottom_sheet_dialog.dart';
+import '../../extension/extension.dart';
 
 class SearchListDialog<T> extends StatefulWidget {
   final String hintText;
@@ -15,6 +16,7 @@ class SearchListDialog<T> extends StatefulWidget {
   final ValueChanged<T> onTap;
   final EdgeInsetsGeometry padding;
   final double height;
+  final int top;
 
   const SearchListDialog({
     Key key,
@@ -26,6 +28,7 @@ class SearchListDialog<T> extends StatefulWidget {
     this.toLabel,
     this.padding = const EdgeInsets.only(left: 5, right: 5, bottom: 10),
     this.height,
+    this.top = 100,
   }) : super(key: key);
 
   @override
@@ -50,16 +53,17 @@ class _SearchListDialogState<T> extends State<SearchListDialog<T>> {
     List<T> _list = widget.items;
     if (_searchKey.isNotEmpty) {
       _list = _list
-          .where((element) => widget.toLabel(element).contains(_searchKey))
-          ?.toList() ??
+              .where((element) => widget.toLabel(element).contains(_searchKey))
+              ?.toList() ??
           [];
     }
-    double _height = widget.height ?? MediaQuery
-        .of(context)
-        .size
-        .height * 4 / 9.0;
-    if (widget.items.length < 6) {
-      _height = widget.titleHeight + widget.items.length * 60 + 10;
+    double _height = widget.height;
+    if (_height == null) {
+      if (widget.items.length < 6) {
+        _height = widget.titleHeight + widget.items.length * 60 + 10;
+      } else {
+        _height = MediaQuery.of(context).size.height * 4 / 9.0;
+      }
     }
 
     return BottomSheetDialog(
@@ -84,15 +88,15 @@ class _SearchListDialogState<T> extends State<SearchListDialog<T>> {
         onPressed: () => NavigatorUtil.pop(context),
       ),
       children: _list
-          .map((e) =>
-          ListTile(
-            onTap: () {
-              widget.onTap(e);
-              NavigatorUtil.pop(context);
-            },
-            title: Text(widget.toLabel(e) ?? '',
-                maxLines: 1, overflow: TextOverflow.ellipsis),
-          ))
+          .subListEnd(0, widget.top)
+          .map((e) => ListTile(
+                onTap: () {
+                  widget.onTap(e);
+                  NavigatorUtil.pop(context);
+                },
+                title: Text(widget.toLabel(e) ?? '',
+                    maxLines: 1, overflow: TextOverflow.ellipsis),
+              ))
           .toList(),
     );
   }

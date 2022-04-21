@@ -17,7 +17,8 @@ class TagPanelWidget extends StatelessWidget {
   final TextAlign textAlign;
   final double fontSize;
 
-  const TagPanelWidget(this.items, {
+  const TagPanelWidget(
+    this.items, {
     Key key,
     this.tagWidth = 80,
     this.itemHeight = 15,
@@ -28,8 +29,7 @@ class TagPanelWidget extends StatelessWidget {
     this.valueColor = const Color(0xff5d6478),
     this.textAlign = TextAlign.left,
     this.fontSize = 16,
-  })
-      : assert(items != null),
+  })  : assert(items != null),
         super(key: key);
 
   @override

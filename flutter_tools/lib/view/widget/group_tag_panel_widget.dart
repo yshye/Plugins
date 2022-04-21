@@ -23,7 +23,6 @@ class GroupTagPanelWidget extends StatelessWidget {
     this.groupTitle,
     this.groupTitleStyle,
     this.groupTitleColor,
-
     this.items,
     this.groupTitlePadding,
     this.panelPadding,
@@ -41,33 +40,35 @@ class GroupTagPanelWidget extends StatelessWidget {
     return Column(
       children: [
         Container(
-          padding:
-              groupTitlePadding ?? EdgeInsets.only(bottom: 5, left: 10, top: 5),
-          width: double.infinity,
-          color: groupTitleColor,
-          child: Row(children: [
-            if(titlePrefixColor!=null)...{
-              Container(
-                width: 3,
-                height: 20,
-                color: titlePrefixColor,
-                margin: EdgeInsets.only(right: 5),
-              ),
-            },
-            Text(
-              groupTitle ?? '',
-              style: groupTitleStyle ??
-                  TextStyle(fontSize: 16, color: Color(0xff9fa7b7)),
-            ),
-          ],)
-        ),
+            padding: groupTitlePadding ??
+                EdgeInsets.only(bottom: 5, left: 10, top: 5),
+            width: double.infinity,
+            color: groupTitleColor,
+            child: Row(
+              children: [
+                if (titlePrefixColor != null) ...{
+                  Container(
+                    width: 3,
+                    height: 20,
+                    color: titlePrefixColor,
+                    margin: EdgeInsets.only(right: 5),
+                  ),
+                },
+                Text(
+                  groupTitle ?? '',
+                  style: groupTitleStyle ??
+                      TextStyle(fontSize: 16, color: Color(0xff9fa7b7)),
+                ),
+              ],
+            )),
         TagPanelWidget(
           items,
           tagWidth: tagWidth,
           tagColor: tagColor,
           valueColor: valueColor,
           panelColor: panelColor,
-          padding: panelPadding ?? EdgeInsets.only(bottom: 5, left: 10, top: 5,right: 5),
+          padding: panelPadding ??
+              EdgeInsets.only(bottom: 5, left: 10, top: 5, right: 5),
           fontSize: fontSize,
           textAlign: textAlign,
         )

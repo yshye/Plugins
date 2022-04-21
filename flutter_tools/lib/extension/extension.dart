@@ -39,9 +39,10 @@ extension DateTimeExtension on DateTime {
     );
   }
 
-  String getFormatStr({DateFormat format = DateFormat.NORMAL,
-    String dateSeparate,
-    String timeSeparate}) {
+  String getFormatStr(
+      {DateFormat format = DateFormat.NORMAL,
+      String dateSeparate,
+      String timeSeparate}) {
     if (this == null) return null;
     return DateUtil.getDateStrByDateTime(this,
         format: format, dateSeparate: dateSeparate, timeSeparate: timeSeparate);
@@ -56,10 +57,10 @@ extension DateTimeExtension on DateTime {
   /// 是否时同一天
   bool isAtSameDayAs(DateTime other) =>
       this != null &&
-          other != null &&
-          this.day == other.day &&
-          this.year == other.year &&
-          this.month == other.month;
+      other != null &&
+      this.day == other.day &&
+      this.year == other.year &&
+      this.month == other.month;
 
   DateTime minDate(DateTime other) {
     if (other == null) return this;

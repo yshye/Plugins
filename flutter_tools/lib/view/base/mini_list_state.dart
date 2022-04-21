@@ -24,35 +24,39 @@ abstract class MiniTableListState<T extends StatefulWidget, M> extends State<T>
       child: Material(
         color: getBackgroundColor(),
         child: Container(
-          child: Column(children: [
-            buildTableBar(),
-            Expanded(child:EasyRefresh(
-              controller: _controller,
-              // firstRefresh: firstRefresh(),
-              emptyWidget: showEmptyWidget
-                  ? EmptyWidget(
-                  emptyImageAsset: getEmptyImageAsset(),
-                  emptyMessage: getEmptyMessage(),
-                  child: getEmptyChild())
-                  : list.length == 0
-                  ? LoadingListWidget(
-                  itemChild: getLoadingChild(),
-                  baseColor: getLoadingBaseColor(),
-                  highlightColor: getLoadingHighlightColor())
-                  : null,
-              child: ListView.builder(
-                controller: ScrollController(),
-                shrinkWrap: true,
-                itemCount: list.length,
-                itemBuilder: (ctx, index) =>
-                    buildItemCell(ctx, list[index], index),
+          child: Column(
+            children: [
+              buildTableBar(),
+              Expanded(
+                child: EasyRefresh(
+                  controller: _controller,
+                  // firstRefresh: firstRefresh(),
+                  emptyWidget: showEmptyWidget
+                      ? EmptyWidget(
+                          emptyImageAsset: getEmptyImageAsset(),
+                          emptyMessage: getEmptyMessage(),
+                          child: getEmptyChild())
+                      : list.length == 0
+                          ? LoadingListWidget(
+                              itemChild: getLoadingChild(),
+                              baseColor: getLoadingBaseColor(),
+                              highlightColor: getLoadingHighlightColor())
+                          : null,
+                  child: ListView.builder(
+                    controller: ScrollController(),
+                    shrinkWrap: true,
+                    itemCount: list.length,
+                    itemBuilder: (ctx, index) =>
+                        buildItemCell(ctx, list[index], index),
+                  ),
+                  // enableControlFinishRefresh: true,
+                  // enableControlFinishLoad: true,
+                  onRefresh: hasRefresh() ? () => fetchData(false) : null,
+                  onLoad: hasMore() ? () => fetchData(true) : null,
+                ),
               ),
-              // enableControlFinishRefresh: true,
-              // enableControlFinishLoad: true,
-              onRefresh: hasRefresh() ? () => fetchData(false) : null,
-              onLoad: hasMore() ? () => fetchData(true) : null,
-            ),),
-          ],),
+            ],
+          ),
         ),
       ),
       onWillPop: onSystemBack,
@@ -79,10 +83,7 @@ abstract class MiniTableListState<T extends StatefulWidget, M> extends State<T>
 
   bool hasMore() => true;
 
-  Color getBackgroundColor() =>
-      Theme
-          .of(context)
-          .backgroundColor;
+  Color getBackgroundColor() => Theme.of(context).backgroundColor;
 
   fetchData(bool more) async {
     if (more) {
@@ -142,15 +143,15 @@ abstract class MiniListState<T extends StatefulWidget, M> extends State<T>
             firstRefresh: firstRefresh(),
             emptyWidget: showEmptyWidget
                 ? EmptyWidget(
-                emptyImageAsset: getEmptyImageAsset(),
-                emptyMessage: getEmptyMessage(),
-                child: getEmptyChild())
+                    emptyImageAsset: getEmptyImageAsset(),
+                    emptyMessage: getEmptyMessage(),
+                    child: getEmptyChild())
                 : list.length == 0
-                ? LoadingListWidget(
-                itemChild: getLoadingChild(),
-                baseColor: getLoadingBaseColor(),
-                highlightColor: getLoadingHighlightColor())
-                : null,
+                    ? LoadingListWidget(
+                        itemChild: getLoadingChild(),
+                        baseColor: getLoadingBaseColor(),
+                        highlightColor: getLoadingHighlightColor())
+                    : null,
             child: ListView.builder(
               controller: ScrollController(),
               shrinkWrap: true,
@@ -185,10 +186,7 @@ abstract class MiniListState<T extends StatefulWidget, M> extends State<T>
 
   bool hasMore() => true;
 
-  Color getBackgroundColor() =>
-      Theme
-          .of(context)
-          .backgroundColor;
+  Color getBackgroundColor() => Theme.of(context).backgroundColor;
 
   fetchData(bool more) async {
     if (more) {

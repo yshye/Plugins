@@ -302,8 +302,9 @@ class EditCell extends StatelessWidget {
             // maxLengthEnforced: true,
             controller: controller,
             onChanged: onChange,
-            keyboardType:
-                (valueMaxLines != null && valueMaxLines > 1) ? null : inputType,
+            keyboardType: (valueMaxLines == null || valueMaxLines > 1)
+                ? TextInputType.multiline
+                : inputType,
             maxLength: maxLength,
             textAlign:
                 style == TagCellStyle.style1 ? TextAlign.left : TextAlign.right,
