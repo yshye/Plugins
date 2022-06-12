@@ -46,7 +46,7 @@ class TabRowCell extends StatelessWidget {
     List<Widget> items = [];
     data.forEach((value) {
       items.add(Expanded(
-        flex: value.flex ?? 1,
+        flex: value.width == null ? (value.flex ?? 1) : null,
         child: Material(
           color: Colors.transparent,
           shape: BorderDirectional(
@@ -67,6 +67,7 @@ class TabRowCell extends StatelessWidget {
           child: Container(
             alignment: value.alignment ?? alignment ?? Alignment.centerLeft,
             height: minHeight,
+            width: value.width,
             padding: value.padding,
             child: value.child ??
                 Text(
@@ -92,6 +93,7 @@ class TabRowCell extends StatelessWidget {
     return Material(
       child: Ink(
         color: color,
+        padding: EdgeInsets.zero,
         child: InkWell(
           onTap: onTap,
           child: Container(

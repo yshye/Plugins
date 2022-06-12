@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tools/view/widget/mini_search_widget.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../router/navigator_util.dart';
 import '../typedef.dart';
@@ -14,22 +15,28 @@ class SearchListDialog<T> extends StatefulWidget {
   final List<T> items;
   final ToString<T> toLabel;
   final ValueChanged<T> onTap;
+  final BuildCheckChild<T> buildCheckChild;
   final EdgeInsetsGeometry padding;
+  final bool Function(T t1, T t2) compare;
+  final T value;
   final double height;
   final int top;
 
-  const SearchListDialog({
-    Key key,
-    this.hintText,
-    this.titleHeight = 60,
-    this.onTap,
-    this.backgroundColor = Colors.white,
-    this.items,
-    this.toLabel,
-    this.padding = const EdgeInsets.only(left: 5, right: 5, bottom: 10),
-    this.height,
-    this.top = 100,
-  }) : super(key: key);
+  const SearchListDialog(
+      {Key key,
+      this.hintText,
+      this.titleHeight = 60,
+      this.onTap,
+      this.backgroundColor = Colors.white,
+      this.items,
+      this.toLabel,
+      this.padding = const EdgeInsets.only(left: 5, right: 5, bottom: 10),
+      this.buildCheckChild,
+      this.height,
+      this.value,
+      this.top = 100,
+      this.compare})
+      : super(key: key);
 
   @override
   _SearchListDialogState<T> createState() => _SearchListDialogState<T>();
@@ -89,14 +96,24 @@ class _SearchListDialogState<T> extends State<SearchListDialog<T>> {
       ),
       children: _list
           .subListEnd(0, widget.top)
-          .map((e) => ListTile(
-                onTap: () {
-                  widget.onTap(e);
-                  NavigatorUtil.pop(context);
-                },
-                title: Text(widget.toLabel(e) ?? '',
-                    maxLines: 1, overflow: TextOverflow.ellipsis),
-              ))
+          .map((e) => widget.buildCheckChild != null
+              ? widget.buildCheckChild(context, e)
+              : ListTile(
+                  onTap: () {
+                    widget.onTap(e);
+                    NavigatorUtil.pop(context);
+                  },
+                  title: Text(widget.toLabel(e) ?? '',
+                      maxLines: 1, overflow: TextOverflow.ellipsis),
+                  trailing: Icon(
+                    MdiIcons.check,
+                    color: widget.compare == null
+                        ? Colors.transparent
+                        : (widget.compare(widget.value, e)
+                            ? Colors.blue
+                            : Colors.transparent),
+                  ),
+                ))
           .toList(),
     );
   }

@@ -9,7 +9,7 @@ class GroupTagPanelWidget extends StatelessWidget {
   final Color groupTitleColor;
   final EdgeInsets groupTitlePadding;
   final EdgeInsets panelPadding;
-  final List<TagValueModel> items;
+  final List items;
   final double tagWidth;
   final Color tagColor;
   final Color valueColor;

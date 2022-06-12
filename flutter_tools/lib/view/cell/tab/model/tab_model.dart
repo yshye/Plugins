@@ -18,7 +18,7 @@ class TabModel {
     this.flex,
     this.textStyle,
     this.onTop,
-    this.width = 80,
+    this.width,
     this.child,
     this.padding = const EdgeInsets.all(3),
     this.alignment,

@@ -119,7 +119,7 @@ abstract class MiniTableListState<T extends StatefulWidget, M> extends State<T>
 /// 列表组件
 abstract class MiniListState<T extends StatefulWidget, M> extends State<T>
     with StateMixin, AutomaticKeepAliveClientMixin {
-  // EasyRefreshController _controller = EasyRefreshController();
+  EasyRefreshController _controller = EasyRefreshController();
   bool isEdited = false;
   List<M> list = [];
   int pageIndex = 1;
@@ -127,9 +127,10 @@ abstract class MiniListState<T extends StatefulWidget, M> extends State<T>
 
   @override
   void afterBuild(Duration timestamp) {
-    if (!hasRefresh()) {
-      fetchData(false);
-    }
+    _controller.callRefresh();
+    // if (!hasRefresh()) {
+    //   fetchData(false);
+    // }
   }
 
   @override
@@ -140,7 +141,8 @@ abstract class MiniListState<T extends StatefulWidget, M> extends State<T>
         color: getBackgroundColor(),
         child: Container(
           child: EasyRefresh(
-            firstRefresh: firstRefresh(),
+            controller: _controller,
+            // firstRefresh: firstRefresh(),
             emptyWidget: showEmptyWidget
                 ? EmptyWidget(
                     emptyImageAsset: getEmptyImageAsset(),
@@ -160,7 +162,11 @@ abstract class MiniListState<T extends StatefulWidget, M> extends State<T>
                   buildItemCell(ctx, list[index], index),
             ),
             onRefresh: hasRefresh() ? () => fetchData(false) : null,
-            onLoad: hasMore() ? () => fetchData(true) : null,
+            onLoad: () => hasMore()
+                ? fetchData(true)
+                : () {
+                    setState(() {});
+                  },
           ),
         ),
       ),

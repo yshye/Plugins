@@ -39,9 +39,10 @@ class TabHeaderCell extends StatelessWidget {
     List<Widget> items = [];
     data.forEach((element) {
       items.add(Expanded(
-        flex: element.flex ?? 1,
+        flex: element.width == null ? (element.flex ?? 1) : null,
         child: Container(
           padding: element.padding,
+          width: element.width,
           alignment: element.alignment ?? alignment ?? Alignment.centerLeft,
           child: Text(
             element.label,
