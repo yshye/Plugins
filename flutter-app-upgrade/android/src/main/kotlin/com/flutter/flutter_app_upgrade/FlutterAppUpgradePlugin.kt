@@ -1,5 +1,6 @@
 package com.flutter.flutter_app_upgrade
 
+import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
@@ -48,7 +49,7 @@ public class FlutterAppUpgradePlugin : FlutterPlugin, MethodCallHandler, Activit
 
     @JvmStatic
     fun registerWith(registrar: Registrar) {
-      this.mContext = registrar.activity()
+      this.mContext = registrar.activity()!!
       val channel = MethodChannel(registrar.messenger(), "flutter_app_upgrade")
       channel.setMethodCallHandler(FlutterAppUpgradePlugin())
     }
@@ -152,16 +153,13 @@ public class FlutterAppUpgradePlugin : FlutterPlugin, MethodCallHandler, Activit
    * 是否存在当前应用市场
    *
    */
+  @SuppressLint("WrongConstant")
   fun isPackageExist(context: Context, packageName: String?): Boolean {
     val manager = context.packageManager
     val intent = Intent().setPackage(packageName)
     val infos = manager.queryIntentActivities(intent,
             PackageManager.GET_INTENT_FILTERS)
-    return if (infos == null || infos.size < 1) {
-      false
-    } else {
-      true
-    }
+    return !(infos == null || infos.size < 1)
   }
 
   /**

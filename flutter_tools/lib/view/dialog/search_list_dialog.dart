@@ -100,8 +100,8 @@ class _SearchListDialogState<T> extends State<SearchListDialog<T>> {
               ? widget.buildCheckChild(context, e)
               : ListTile(
                   onTap: () {
-                    widget.onTap(e);
                     NavigatorUtil.pop(context);
+                    widget.onTap(e);
                   },
                   title: Text(widget.toLabel(e) ?? '',
                       maxLines: 1, overflow: TextOverflow.ellipsis),
