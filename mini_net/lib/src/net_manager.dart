@@ -43,8 +43,7 @@ class NetManager {
     return _instance;
   }
 
-  Future<ResponseModel> get(
-    String path, {
+  Future<ResponseModel> get(String path, {
     Map<String, dynamic>? body,
     CancelToken? cancelToken,
     Map<String, dynamic> extra = const {},
@@ -73,9 +72,9 @@ class NetManager {
     return responseModel;
   }
 
-  Future<ResponseModel> post(
-    String path, {
+  Future<ResponseModel> post(String path, {
     Map<String, dynamic>? body,
+    List? list,
     CancelToken? cancelToken,
     Map<String, dynamic> extra = const {},
   }) async {
@@ -88,7 +87,7 @@ class NetManager {
     if (_dio!.options.contentType == Headers.formUrlEncodedContentType) {
       data = FormData.fromMap(body ?? {});
     } else {
-      data = body;
+      data = list ?? body;
     }
 
     // print(data);

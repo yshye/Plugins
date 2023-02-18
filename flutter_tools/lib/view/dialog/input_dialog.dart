@@ -67,14 +67,14 @@ class _InputDialog extends State<InputDialog> {
     Widget messageWidget = StringUtil.isEmpty(widget.message)
         ? Container()
         : Container(
-            margin: const EdgeInsets.only(left: 16, right: 16),
-            child: Text(
-              widget.message,
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                  height: 1.2, color: Colors.pinkAccent, fontSize: 14),
-            ),
-          );
+      margin: const EdgeInsets.only(left: 16, right: 16),
+      child: Text(
+        widget.message,
+        textAlign: TextAlign.left,
+        style: TextStyle(
+            height: 1.2, color: Colors.pinkAccent, fontSize: 14),
+      ),
+    );
     return BaseDialog(
       title: widget.title,
       titleStyle: widget.titleTextStyle,
@@ -110,8 +110,8 @@ class _InputDialog extends State<InputDialog> {
                   focusedBorder: InputBorder.none,
                   enabledBorder: InputBorder.none,
                   counterText: ''
-                  //hintStyle: TextStyles.textGrayC14,
-                  ),
+                //hintStyle: TextStyles.textGrayC14,
+              ),
             ),
           ),
         ],
@@ -127,12 +127,16 @@ class _InputDialog extends State<InputDialog> {
       },
       button2Text: widget.button2Text,
       onClick2: () {
-        if (widget.hasRequired && _controller.text.trim().isEmpty) {
+        if (widget.hasRequired && _controller.text
+            .trim()
+            .isEmpty) {
           ToastUtil.showError(widget.hintText ?? '输入${widget.title}');
           return;
         }
         if (widget.minLength != null) {
-          if (_controller.text.trim().length < widget.minLength) {
+          if (_controller.text
+              .trim()
+              .length < widget.minLength) {
             ToastUtil.showError('${widget.title}不可少于${widget.minLength}个字!');
             return;
           }
@@ -144,41 +148,41 @@ class _InputDialog extends State<InputDialog> {
   }
 }
 
-void showInputDialog(
-  BuildContext context,
-  ValueChanged<String> okCallback, {
-  ValueChanged<String> cancelCallback,
-  String hintText,
-  @required String title,
-  TextStyle titleTextStyle,
-  String message,
-  int maxLength,
-  String okText,
-  String cancelText,
-  bool required = true,
-  String content,
-  TextInputType inputType,
-  int maxLines,
-  int minLength,
-}) {
+void showInputDialog(BuildContext context,
+    ValueChanged<String> okCallback, {
+      ValueChanged<String> cancelCallback,
+      String hintText,
+      @required String title,
+      TextStyle titleTextStyle,
+      String message,
+      int maxLength,
+      String okText,
+      String cancelText,
+      bool required = true,
+      String content,
+      TextInputType inputType,
+      int maxLines,
+      int minLength,
+    }) {
   showDialog(
     context: context,
     barrierDismissible: false,
-    builder: (ctx) => InputDialog(
-      title: title,
-      hintText: hintText,
-      onPressed: okCallback,
-      message: message,
-      cancelCallback: cancelCallback,
-      maxLength: maxLength,
-      button1Text: cancelText,
-      button2Text: okText,
-      hasRequired: required,
-      content: content,
-      maxLines: maxLines,
-      titleTextStyle: titleTextStyle,
-      minLength: minLength,
-    ),
+    builder: (ctx) =>
+        InputDialog(
+          title: title,
+          hintText: hintText,
+          onPressed: okCallback,
+          message: message,
+          cancelCallback: cancelCallback,
+          maxLength: maxLength,
+          button1Text: cancelText,
+          button2Text: okText,
+          hasRequired: required,
+          content: content,
+          maxLines: maxLines,
+          titleTextStyle: titleTextStyle,
+          minLength: minLength,
+        ),
   );
 }
 
@@ -186,8 +190,14 @@ _getInputFormatter(TextInputType keyboardType, int maxLength) {
   if (keyboardType == TextInputType.numberWithOptions(decimal: true)) {
     return [UsNumberTextInputFormatter()];
   }
-  if (keyboardType == TextInputType.number ||
-      keyboardType == TextInputType.phone) {
+  if (keyboardType == TextInputType.number) {
+    return [
+      UsNumberTextInputFormatter(decimal: false),
+      FilteringTextInputFormatter.digitsOnly,
+      LengthLimitingTextInputFormatter(maxLength),
+    ];
+  }
+  if (keyboardType == TextInputType.phone) {
     return [
       FilteringTextInputFormatter.digitsOnly,
       LengthLimitingTextInputFormatter(maxLength)
