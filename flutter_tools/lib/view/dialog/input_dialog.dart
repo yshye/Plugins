@@ -24,6 +24,7 @@ class InputDialog extends StatefulWidget {
     this.maxLines,
     this.titleTextStyle,
     this.minLength,
+    this.maxNum,
   }) : super(key: key);
 
   final String title;
@@ -39,6 +40,7 @@ class InputDialog extends StatefulWidget {
   final String button2Text;
   final int maxLines;
   final int minLength;
+  final int maxNum;
 
   /// 必填
   final bool hasRequired;
@@ -101,7 +103,10 @@ class _InputDialog extends State<InputDialog> {
               textInputAction: TextInputAction.done,
               keyboardType: widget.inputType ?? TextInputType.text,
               inputFormatters: _getInputFormatter(
-                  widget.inputType ?? TextInputType.text, widget.maxLength),
+                widget.inputType ?? TextInputType.text,
+                widget.maxLength,
+                maxNum: widget.maxNum,
+              ),
               decoration: InputDecoration(
                   isDense: true,
                   contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -163,6 +168,7 @@ void showInputDialog(BuildContext context,
       TextInputType inputType,
       int maxLines,
       int minLength,
+      int maxNum,
     }) {
   showDialog(
     context: context,
@@ -182,22 +188,32 @@ void showInputDialog(BuildContext context,
           maxLines: maxLines,
           titleTextStyle: titleTextStyle,
           minLength: minLength,
+          maxNum: maxNum,
+          inputType: inputType,
         ),
   );
 }
 
-_getInputFormatter(TextInputType keyboardType, int maxLength) {
+/// [placesLength] 小数位（[decimal]=true时生效）<br/>
+/// [onlyNumValue] 固定小数位,范围 null || [1-9]且[placesLength]=1时可用
+_getInputFormatter(TextInputType keyboardType, int maxLength,
+    {num maxNum, int placesLength, int onlyNumValue}) {
   if (keyboardType == TextInputType.numberWithOptions(decimal: true)) {
-    return [UsNumberTextInputFormatter()];
-  }
-  if (keyboardType == TextInputType.number) {
     return [
-      UsNumberTextInputFormatter(decimal: false),
+      _UsNumberTextInputFormatter(
+        max: maxNum,
+        onlyNumValue: onlyNumValue,
+        placesLength: placesLength,
+        decimal: keyboardType == TextInputType.numberWithOptions(decimal: true),
+      )
+    ];
+  } else if (keyboardType == TextInputType.number) {
+    return [
+      _UsNumberTextInputFormatter(max: maxNum, decimal: false),
       FilteringTextInputFormatter.digitsOnly,
       LengthLimitingTextInputFormatter(maxLength),
     ];
-  }
-  if (keyboardType == TextInputType.phone) {
+  } else if (keyboardType == TextInputType.phone) {
     return [
       FilteringTextInputFormatter.digitsOnly,
       LengthLimitingTextInputFormatter(maxLength)
@@ -205,3 +221,65 @@ _getInputFormatter(TextInputType keyboardType, int maxLength) {
   }
   return null;
 }
+
+
+class _UsNumberTextInputFormatter extends TextInputFormatter {
+  static const defaultDouble = 0.001;
+  bool decimal;
+  num max;
+
+  /// 小数位（[decimal]=true时生效）
+  int placesLength;
+
+  /// 固定小数位,范围 null || [1-9]且[placesLength]=1时可用，
+  int onlyNumValue;
+
+  _UsNumberTextInputFormatter(
+      {this.max, this.decimal = true, this.placesLength, this.onlyNumValue})
+      : assert(onlyNumValue == null || (onlyNumValue > 0 && onlyNumValue < 10));
+
+  static double strToFloat(String str, [double defaultValue = defaultDouble]) {
+    try {
+      return double.parse(str);
+    } catch (e) {
+      return defaultValue;
+    }
+  }
+
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue,
+      TextEditingValue newValue) {
+    String value = newValue.text;
+    int selectionIndex = newValue.selection.end;
+    if (decimal) {
+      if (value == '.') {
+        value = '0.';
+      } else if (value != '' &&
+          value != defaultDouble.toString() &&
+          strToFloat(value, defaultDouble) == defaultDouble) {
+        value = oldValue.text;
+        selectionIndex = oldValue.selection.end;
+      } else {
+        if (placesLength != null) {
+          int index = value.indexOf('.');
+          if (index > 0 && index + placesLength < value.length) {
+            if (placesLength == 1 && onlyNumValue != null) {
+              value = "${value.substring(0, index + 1)}$onlyNumValue";
+            } else {
+              value = value.substring(0, index + placesLength + 1);
+            }
+          }
+        }
+      }
+    }
+    if (max != null && value.isNotEmpty && num.parse(value) > max) {
+      value = '$max';
+    }
+    selectionIndex = value.length;
+    return TextEditingValue(
+      text: value,
+      selection: TextSelection.collapsed(offset: selectionIndex),
+    );
+  }
+}
+
