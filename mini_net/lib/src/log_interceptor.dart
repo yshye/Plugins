@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'dart:convert';
 
 void _printLog(Object object, Map<String, dynamic> extra) => print(object);
 
@@ -41,10 +42,14 @@ class MiniLogInterceptor extends Interceptor {
     if (data != null) {
       _log.write('- BODY: \n');
       if (data is Map) {
-        _log..write(data.mapToStructureString())..write('\n');
+        // _log..write(data.mapToStructureString())..write('\n');
+        _log..write(jsonEncode(data))..write('\n');
       } else if (data is FormData) {
         var fields = Map()..addEntries(data.files)..addEntries(data.fields);
-        _log..write(fields.mapToStructureString())..write('\n');
+        // _log..write(fields.mapToStructureString())..write('\n');
+        _log..write(jsonEncode(fields))..write('\n');
+      } else if(data is List){
+        _log..write(jsonEncode(data))..write('\n');
       } else {
         _log..write(data.toString())..write('\n');
       }
