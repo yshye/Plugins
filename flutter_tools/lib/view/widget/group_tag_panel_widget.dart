@@ -17,6 +17,7 @@ class GroupTagPanelWidget extends StatelessWidget {
   final TextAlign textAlign;
   final double fontSize;
   final Color titlePrefixColor;
+  final Widget rightTitle;
 
   const GroupTagPanelWidget({
     Key key,
@@ -33,6 +34,7 @@ class GroupTagPanelWidget extends StatelessWidget {
     this.textAlign = TextAlign.left,
     this.fontSize = 16,
     this.titlePrefixColor,
+    this.rightTitle,
   }) : super(key: key);
 
   @override
@@ -54,11 +56,16 @@ class GroupTagPanelWidget extends StatelessWidget {
                     margin: EdgeInsets.only(right: 5),
                   ),
                 },
-                Text(
-                  groupTitle ?? '',
-                  style: groupTitleStyle ??
-                      TextStyle(fontSize: 16, color: Color(0xff9fa7b7)),
+                Expanded(
+                  child: Text(
+                    groupTitle ?? '',
+                    style: groupTitleStyle ??
+                        TextStyle(fontSize: 16, color: Color(0xff9fa7b7)),
+                  ),
                 ),
+                if (rightTitle != null) ...{
+                  rightTitle,
+                },
               ],
             )),
         TagPanelWidget(

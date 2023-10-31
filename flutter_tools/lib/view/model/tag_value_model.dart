@@ -19,24 +19,29 @@ class TagValueModel {
   int maxLines2;
   int maxLines;
   Axis axis;
+  double tagWidth;
+  double tag2Width;
 
-  TagValueModel(
-      {this.tag,
-      this.tagColor,
-      this.tagHight = false,
-      this.showLine = false,
-      this.value,
-      this.valueColor,
-      this.clip = false,
-      this.clipTap,
-      this.tag2,
-      this.tagColor2,
-      this.value2,
-      this.valueColor2,
-      this.inputType = TextInputType.text,
-      this.inputType2 = TextInputType.text,
-      this.child,
-      this.maxLines,
-      this.maxLines2,
-      this.axis});
+  TagValueModel({
+    this.tag,
+    this.tagColor,
+    this.tagHight = false,
+    this.showLine = false,
+    this.value,
+    this.valueColor,
+    this.clip = false,
+    this.clipTap,
+    this.tag2,
+    this.tagColor2,
+    this.value2,
+    this.valueColor2,
+    this.inputType = TextInputType.text,
+    this.inputType2 = TextInputType.text,
+    this.child,
+    this.maxLines,
+    this.maxLines2,
+    this.axis,
+    this.tag2Width,
+    this.tagWidth,
+  });
 }

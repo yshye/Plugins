@@ -10,14 +10,16 @@ class EditCell extends StatelessWidget {
   final double minHeight;
   final bool showCounter;
   final EditValueModel data;
+  final String allowSource;
 
-  const EditCell(
-      {Key key,
-      this.padding = const EdgeInsets.all(1),
-      this.minHeight = 35,
-      this.data,
-      this.showCounter = true})
-      : super(key: key);
+  const EditCell({
+    Key key,
+    this.padding = const EdgeInsets.all(1),
+    this.minHeight = 35,
+    this.data,
+    this.showCounter = true,
+    this.allowSource,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +54,7 @@ class EditCell extends StatelessWidget {
                     onlyNumValue: data.onlyNumValue,
                     style: data.style,
                     direction: data.direction,
+                    allowSource: allowSource,
                   )
                 : _buildTwoItem(
                     context,
@@ -268,6 +271,7 @@ class EditCell extends StatelessWidget {
     int onlyNumValue,
     TagCellStyle style = TagCellStyle.style2,
     Axis direction = Axis.horizontal,
+    String allowSource,
   }) {
     Widget _tagWidget = Container(
       width: tagWidth,
@@ -308,10 +312,14 @@ class EditCell extends StatelessWidget {
             maxLength: maxLength,
             textAlign:
                 style == TagCellStyle.style1 ? TextAlign.left : TextAlign.right,
-            inputFormatters: _getInputFormatter(inputType, maxLength,
-                maxNum: maxNum,
-                onlyNumValue: onlyNumValue,
-                placesLength: placesLength),
+            inputFormatters: _getInputFormatter(
+              inputType,
+              maxLength,
+              maxNum: maxNum,
+              onlyNumValue: onlyNumValue,
+              placesLength: placesLength,
+              allowSource: allowSource,
+            ),
             textAlignVertical: TextAlignVertical.top,
             decoration: inputDecoration ??
                 InputDecoration(
@@ -355,7 +363,7 @@ class EditCell extends StatelessWidget {
 /// [placesLength] 小数位（[decimal]=true时生效）<br/>
 /// [onlyNumValue] 固定小数位,范围 null || [1-9]且[placesLength]=1时可用
 _getInputFormatter(TextInputType keyboardType, int maxLength,
-    {num maxNum, int placesLength, int onlyNumValue}) {
+    {num maxNum, int placesLength, int onlyNumValue, String allowSource}) {
   if (keyboardType == TextInputType.numberWithOptions(decimal: true)) {
     return [
       UsNumberTextInputFormatter(
@@ -375,6 +383,11 @@ _getInputFormatter(TextInputType keyboardType, int maxLength,
     return [
       FilteringTextInputFormatter.digitsOnly,
       LengthLimitingTextInputFormatter(maxLength)
+    ];
+  } else if (allowSource != null) {
+    return [
+      FilteringTextInputFormatter.allow(RegExp(allowSource))
+      // [\u4e00-\u9fa5a-zA-Z0-9、，。、：；,.:;]
     ];
   }
   return null;
@@ -396,6 +409,7 @@ class UsNumberTextInputFormatter extends TextInputFormatter {
       : assert(onlyNumValue == null || (onlyNumValue > 0 && onlyNumValue < 10));
 
   static double strToFloat(String str, [double defaultValue = defaultDouble]) {
+    if (str.isEmpty) return 0;
     try {
       return double.parse(str);
     } catch (e) {

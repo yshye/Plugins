@@ -40,7 +40,6 @@ abstract class TimelineInfo {
   String oneDay(int days); //a day(1天).
 
   String days(int days); //x days(x天).
-
 }
 
 class ZhInfo implements TimelineInfo {
