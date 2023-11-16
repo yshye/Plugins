@@ -10,7 +10,7 @@ class DateDay extends DateMonth {
 
   int get day => _day;
 
-  DateDay([int year, int month, int day])
+  DateDay(int year, int month, [int day = 1])
       : this.dateTime(DateTime(year, month, day));
 
   DateDay.dateTime(DateTime time) : super.dateTime(time) {

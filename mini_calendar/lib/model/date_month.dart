@@ -26,10 +26,10 @@ class DateMonth {
 
   DateDay get monthEndDay => DateDay(year, month, maxDays);
 
-  DateMonth([int year, int month]) : this.dateTime(DateTime(year, month, 1));
+  DateMonth(int year,[int month=1]) : this.dateTime(DateTime(year, month, 1));
 
   DateMonth.dateTime(DateTime _time) {
-    this._time = DateTime.utc(_time.year, _time.month, 1);
+    this._time = DateTime.utc(_time.year, _time.month, _time.day);
     _year = this.time.year;
     _month = this.time.month;
     _maxDays = DateTime.utc(this.time.year, this.time.month + 1, 1)
